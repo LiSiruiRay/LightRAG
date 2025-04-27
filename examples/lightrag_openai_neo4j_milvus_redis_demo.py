@@ -1,7 +1,8 @@
 import os
 import asyncio
 from lightrag import LightRAG, QueryParam
-from lightrag.llm.ollama import ollama_embed, openai_complete_if_cache
+from lightrag.llm.ollama import ollama_embed
+from lightrag.llm.openai import openai_complete_if_cache
 from lightrag.utils import EmbeddingFunc
 from lightrag.kg.shared_storage import initialize_pipeline_status
 
@@ -13,20 +14,20 @@ if not os.path.exists(WORKING_DIR):
 print(f"WorkingDir: {WORKING_DIR}")
 
 # redis
-os.environ["REDIS_URI"] = "redis://localhost:6379"
+# os.environ["REDIS_URI"] = "redis://localhost:6379"
 
 # neo4j
 BATCH_SIZE_NODES = 500
 BATCH_SIZE_EDGES = 100
-os.environ["NEO4J_URI"] = "bolt://117.50.173.35:7687"
+os.environ["NEO4J_URI"] = "bolt://localhost:7687"
 os.environ["NEO4J_USERNAME"] = "neo4j"
-os.environ["NEO4J_PASSWORD"] = "12345678"
+os.environ["NEO4J_PASSWORD"] = "password"
 
 # milvus
-os.environ["MILVUS_URI"] = "http://117.50.173.35:19530"
-os.environ["MILVUS_USER"] = "root"
-os.environ["MILVUS_PASSWORD"] = "Milvus"
-os.environ["MILVUS_DB_NAME"] = "lightrag"
+# os.environ["MILVUS_URI"] = "http://117.50.173.35:19530"
+# os.environ["MILVUS_USER"] = "root"
+# os.environ["MILVUS_PASSWORD"] = "Milvus"
+# os.environ["MILVUS_DB_NAME"] = "lightrag"
 
 
 async def llm_model_func(
@@ -60,10 +61,10 @@ async def initialize_rag():
         embedding_func=embedding_func,
         chunk_token_size=512,
         chunk_overlap_token_size=256,
-        kv_storage="RedisKVStorage",
+        # kv_storage="RedisKVStorage",
         graph_storage="Neo4JStorage",
-        vector_storage="MilvusVectorDBStorage",
-        doc_status_storage="RedisKVStorage",
+        # vector_storage="MilvusVectorDBStorage",
+        # doc_status_storage="RedisKVStorage",
     )
 
     await rag.initialize_storages()
